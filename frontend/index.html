@@ -8,10 +8,16 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Quicksand:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <!-- === PWA / MOBILE META TAGS === -->
+    <meta name="theme-color" content="#A1887F"/>
+    <link rel="apple-touch-icon" href="https://placehold.co/192x192/A1887F/FFFFFF?text=NNN">
+    <link rel="manifest" href="manifest.json">
+    <!-- ============================== -->
+
     <style>
         /* CSS tùy chỉnh */
         html, body {
-            /* height: 100%; */ /* Loại bỏ để sử dụng biến tùy chỉnh */
             overflow: hidden; /* Ngăn cuộn toàn bộ trang */
             font-family: 'Quicksand', sans-serif; 
             background-color: #F5F5DC;
@@ -19,7 +25,6 @@
         .font-title { 
             font-family: 'Playfair Display', serif; 
         }
-        /* Tùy chỉnh thanh cuộn */
         #chat-messages::-webkit-scrollbar { 
             width: 8px; 
         }
@@ -33,11 +38,9 @@
         #chat-messages::-webkit-scrollbar-thumb:hover { 
             background: #8D6E63; 
         }
-        
-        /* Tăng kích thước font chữ trong bong bóng chat */
         .message-bubble p {
-            font-size: 18px; /* Tăng kích thước font chữ */
-            line-height: 1.6; /* Cải thiện khả năng đọc */
+            font-size: 18px;
+            line-height: 1.6;
         }
     </style>
 </head>
@@ -70,16 +73,24 @@
 
     <script>
         // --- SỬA LỖI CHIỀU CAO TRÊN MOBILE ---
-        // Hàm này tính toán chiều cao thực của viewport và đặt nó thành một biến CSS.
-        // Điều này giúp tránh vấn đề layout bị co lại khi bàn phím ảo xuất hiện trên điện thoại.
         const setAppHeight = () => {
             document.documentElement.style.setProperty('--app-height', `${window.innerHeight}px`);
         }
-        // Chạy hàm khi cửa sổ thay đổi kích thước (xoay màn hình, hiện bàn phím)
         window.addEventListener('resize', setAppHeight);
-        // Chạy hàm ngay khi tải trang
         setAppHeight();
         // --- KẾT THÚC SỬA LỖI ---
+
+        // --- PWA SERVICE WORKER REGISTRATION ---
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('sw.js').then(registration => {
+                    console.log('ServiceWorker registration successful with scope: ', registration.scope);
+                }, err => {
+                    console.log('ServiceWorker registration failed: ', err);
+                });
+            });
+        }
+        // --- END PWA ---
 
         // === THÔNG TIN CẤU HÌNH QUAN TRỌNG ===
         const BACKEND_API_URL = "https://trolyngoinhanho.onrender.com";
