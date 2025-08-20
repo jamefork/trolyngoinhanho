@@ -1,13 +1,12 @@
 <!DOCTYPE html>
-<html lang="vi">
-<head>
+<html lang="vi"><head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Trợ lý Hỏi Đáp về Ngôi Nhà Nhỏ</title>
     <link href="/dist/output.css" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Quicksand:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&amp;family=Quicksand:wght@400;500;700&amp;display=swap" rel="stylesheet">
     <style>
         /* CSS tùy chỉnh */
         html, body {
@@ -36,8 +35,85 @@
             line-height: 1.6;
         }
     </style>
-</head>
+
+    <!-- === PWA (Progressive Web App) Support === -->
+    <meta name="theme-color" content="#92400e">
+    <link rel="manifest" href="manifest.json">
+    <link rel="apple-touch-icon" href="images/icons/icon-192x192.png">
+    <link rel="icon" href="images/icons/icon-32x32.png" type="image/png">
+    <!-- === End PWA Support === --><style>
+        #install-prompt {
+            /* Layout */
+            display: none; /* JS sẽ đổi thành 'flex' để hiển thị */
+            align-items: center;
+            gap: 1rem;
+            
+            /* Position */
+            position: fixed;
+            bottom: 80px;
+            left: 1rem;
+            right: 1rem;
+            z-index: 2000;
+            max-width: 28rem; /* 448px */
+            margin-left: auto;
+            margin-right: auto;
+
+            /* Appearance */
+            background-color: #166534; /* Tương ứng bg-green-800 */
+            color: #ffffff;
+            padding: 0.75rem; /* 12px */
+            border-radius: 0.5rem; /* 8px */
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        @media (min-width: 640px) {
+            #install-prompt {
+                left: 50%;
+                transform: translateX(-50%);
+                width: auto;
+            }
+        }
+        #install-prompt .prompt-text {
+            flex-grow: 1;
+            font-size: 0.875rem; /* 14px */
+        }
+        #install-prompt #install-button {
+            background-color: #ffffff;
+            color: #166534; /* Màu chữ xanh đậm */
+            font-weight: 700;
+            padding: 0.5rem 1rem;
+            border-radius: 0.375rem; /* 6px */
+            border: none;
+            cursor: pointer;
+            flex-shrink: 0;
+            transition: background-color 0.2s;
+        }
+        #install-prompt #install-button:hover {
+            background-color: #f0fdf4; /* Màu nền xanh lá rất nhạt khi hover */
+        }
+        #install-prompt #close-install-prompt {
+            background: none;
+            border: none;
+            color: #ffffff;
+            opacity: 0.7;
+            cursor: pointer;
+            flex-shrink: 0;
+            padding: 0.25rem;
+            transition: opacity 0.2s;
+        }
+        #install-prompt #close-install-prompt:hover {
+            opacity: 1;
+        }</style></head>
 <body class="bg-stone-100 text-stone-800">
+    <!-- PWA Install Prompt -->
+    <div id="install-prompt">
+        <div class="prompt-text">
+            Cài đặt ứng dụng để sử dụng thuận tiện hơn!
+        </div>
+        <button id="install-button">Cài đặt</button>
+        <button id="close-install-prompt">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        </button>
+    </div>
 
     <!-- Container chính chiếm toàn bộ màn hình, sử dụng biến --app-height để tương thích mobile -->
     <div class="w-screen flex flex-col bg-white" style="height: var(--app-height, 100vh);">
@@ -45,7 +121,7 @@
         <!-- Header của ứng dụng -->
         <div class="text-center py-4 border-b border-stone-200 shadow-sm flex-shrink-0">
             <h1 class="font-title text-2xl md:text-3xl font-bold text-amber-800">TRỢ LÝ NGÔI NHÀ NHỎ</h1>
-            <p class="text-stone-500 text-sm mt-1">Trợ lý giải đáp các thắc mắc về các vấn đề liên quan đến Ngôi Nhà Nhỏ và Niệm Kinh Bài Tập Hàng Ngày của bạn</p>
+            <p class="text-stone-500 text-sm mt-1">Pháp Môn Tâm Linh</p>
         </div>
 
         <!-- Khu vực hiển thị tin nhắn -->
@@ -56,7 +132,7 @@
         <!-- Form nhập liệu được cố định ở dưới cùng -->
         <div class="p-4 bg-white border-t border-stone-200 shadow-inner flex-shrink-0">
             <div class="flex items-center bg-stone-100 rounded-full p-2">
-                <input type="text" id="user-input" placeholder="Đang chuẩn bị..." class="flex-1 bg-transparent px-4 py-2 text-stone-700 text-lg focus:outline-none" autocomplete="off" disabled>
+                <input type="text" id="user-input" placeholder="Đang chuẩn bị..." class="flex-1 bg-transparent px-4 py-2 text-stone-700 text-lg focus:outline-none" autocomplete="off" disabled="">
                 <button id="send-button" class="bg-amber-700 hover:bg-amber-800 text-white w-12 h-12 rounded-full transition duration-300 flex items-center justify-center disabled:opacity-50 disabled:bg-stone-400 flex-shrink-0">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2L11 13"></path><path d="M22 2L15 22l-4-9-9-4 22-2z"></path></svg>
                 </button>
@@ -93,7 +169,7 @@
                 documentContext = await response.text();
                 addMessage('Sư huynh cần đệ trợ giúp về Ngôi nhà nhỏ ạ?', 'bot');
                 userInput.disabled = false;
-                userInput.placeholder = "Nhập câu hỏi của bạn...";
+                userInput.placeholder = "Nhập câu hỏi của Sư Huynh...";
             } catch (error) {
                 console.error("Lỗi khi tải tài liệu mặc định:", error);
                 addMessage(`Lỗi khi tải tài liệu: ${error.message}`, 'bot', 'error');
@@ -185,5 +261,54 @@
             sendButton.disabled = userInput.value.trim().length === 0 || !documentContext; 
         });
     </script>
+	<script>
+			// === PWA Installation Logic ===
+			window.addEventListener('load', () => {
+				const installPromptEl = document.getElementById('install-prompt');
+				const installButton = document.getElementById('install-button');
+				const closeInstallPromptButton = document.getElementById('close-install-prompt');
+				let deferredPrompt;
+
+				if ('serviceWorker' in navigator) {
+					navigator.serviceWorker.register('sw.js')
+					.then((reg) => console.log('Service worker registered.', reg))
+					.catch((err) => console.error('Service worker registration failed:', err));
+				}
+
+				window.addEventListener('beforeinstallprompt', (e) => {
+					e.preventDefault();
+					deferredPrompt = e;
+					if (installPromptEl) {
+						installPromptEl.style.display = 'flex';
+					}
+				});
+
+				if (installButton) {
+					installButton.addEventListener('click', async () => {
+						if (deferredPrompt) {
+							if (installPromptEl) installPromptEl.style.display = 'none';
+							deferredPrompt.prompt();
+							await deferredPrompt.userChoice;
+							deferredPrompt = null;
+						}
+					});
+				}
+
+				if (closeInstallPromptButton) {
+					closeInstallPromptButton.addEventListener('click', () => {
+						 if (installPromptEl) {
+							installPromptEl.style.display = 'none';
+						 }
+					});
+				}
+				
+				setTimeout(() => {
+					const isStandalone = window.matchMedia('(display-mode: standalone)').matches;
+					if (!isStandalone && deferredPrompt) {
+						if (installPromptEl) installPromptEl.style.display = 'flex';
+					}
+				}, 3000);
+			});
+	</script>
 </body>
 </html>
