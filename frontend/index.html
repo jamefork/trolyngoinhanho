@@ -159,42 +159,11 @@
         window.addEventListener('resize', setAppHeight);
         setAppHeight();
         // --- KẾT THÚC SỬA LỖI ---
+		
         // === THÔNG TIN CẤU HÌNH QUAN TRỌNG ===
         const BACKEND_API_URL = "https://trolyngoinhanho.onrender.com";
-		const DEFAULT_DOCUMENT_URL = "https://troly.pmtl.site/dulieu.txt";
-		let documentContext = "";
-		
-		/**
-		 * Hàm này sẽ tải nội dung văn bản từ một URL và lưu vào biến documentContext.
-		 */
-		async function loadDocumentContext() {
-		  try {
-		    // 1. Gửi yêu cầu (request) đến URL
-		    const response = await fetch(DEFAULT_DOCUMENT_URL);
-		
-		    // 2. Kiểm tra xem yêu cầu có thành công không. Nếu không, báo lỗi.
-		    if (!response.ok) {
-		      throw new Error(`Lỗi khi tải tệp: ${response.status} ${response.statusText}`);
-		    }
-		
-		    // 3. Lấy nội dung văn bản từ phản hồi (response)
-		    const textContent = await response.text();
-		
-		    // 4. Gán nội dung vào biến của bạn
-		    documentContext = textContent;
-		
-		    console.log("✅ Tải tài liệu thành công!");
-		    // console.log("Nội dung:", documentContext); // Bỏ comment dòng này để xem nội dung
-		
-		  } catch (error) {
-		    // 5. Nếu có bất kỳ lỗi nào (mạng, CORS, file không tồn tại), nó sẽ được xử lý ở đây
-		    console.error("❌ Đã xảy ra lỗi khi tải tài liệu:", error);
-		    // Tại đây, bạn có thể hiển thị thông báo lỗi cho người dùng
-		  }
-		}
-		
-		// --- Gọi hàm để bắt đầu tải tài liệu ---
-		loadDocumentContext();
+        const DEFAULT_DOCUMENT_URL = "https://gist.githubusercontent.com/kieunhi050595-star/ddecde18f83b77d06a117a9fcf349188/raw/bc2e4403137c58bb7269b2a048e9834c5466c40e/dulieu.txt";
+        let documentContext = "";
         // ===================================
 
         const chatMessages = document.getElementById('chat-messages');
