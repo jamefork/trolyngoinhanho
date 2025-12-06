@@ -47,49 +47,45 @@ app.post('/api/chat', async (req, res) => {
             });
         }
 
-        const model = "gemini-2.5-flash";
+        // Sử dụng model ổn định. Có thể cân nhắc dùng model pro nếu cần độ chính xác cao hơn nữa.
+        const model = "gemini-2.0-flash"; // Hoặc gemini-1.5-pro nếu có quota
         const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${GEMINI_API_KEY}`;
 
-        // Tạo prompt giống hệt như trong file HTML của bạn
-        const prompt = `Bạn là một trợ lý AI chuyên gia về tra cứu thông tin. Nhiệm vụ của bạn là tìm câu trả lời cho câu hỏi của người dùng CHỈ từ trong VĂN BẢN NGUỒN được cung cấp.
+        // Tạo prompt tối ưu cho việc trích xuất chính xác
+        const prompt = `Bạn là một công cụ trích xuất thông tin chính xác tuyệt đối. Nhiệm vụ của bạn là trích xuất câu trả lời cho câu hỏi của người dùng CHỈ từ trong VĂN BẢN NGUỒN được cung cấp.
 
-        **QUY TẮC BẮT BUỘC PHẢI TUÂN THEO:**
-        
-        1.  **PHẠM VI TRẢ LỜI:** Chỉ được phép sử dụng thông tin có trong VĂN BẢN NGUỒN. TUYỆT ĐỐI KHÔNG được dùng kiến thức của riêng bạn hoặc thông tin từ bên ngoài.
-        2.  **TRƯỜNG HỢP KHÔNG TÌM THẤY:** Nếu bạn đọc kỹ VĂN BẢN NGUỒN và không tìm thấy câu trả lời cho câu hỏi, bạn BẮT BUỘC phải trả lời bằng một câu duy nhất, chính xác là: "Mời Sư huynh tra cứu thêm tại mục lục tổng quan : https://mucluc.pmtl.site ." Không giải thích, không xin lỗi, không thêm bất cứ điều gì khác.
-        3.  **TRÍCH DẪN TRỰC TIẾP:** Cố gắng trích dẫn câu trả lời càng gần với nguyên văn trong tài liệu càng tốt. Không suy diễn, không tóm tắt nếu không cần thiết.
-        4.  **XỬ LÝ ĐƯỜNG DẪN (LINK):** Nếu câu trả lời có chứa một đường dẫn (URL), hãy đảm bảo bạn trả về đường dẫn đó dưới dạng văn bản thuần túy. TUYỆT ĐỐI KHÔNG bọc đường dẫn trong bất kỳ định dạng nào khác (ví dụ: không dùng Markdown như \`[text](link)\`).
-        5.  **QUY TẮC XƯNG HÔ (RẤT QUAN TRỌNG):** - Bạn (AI) tự xưng là: "đệ".
-            - Gọi người dùng là: "Sư huynh".
-            - TUYỆT ĐỐI KHÔNG gọi người dùng là "đệ", "con", hay "bạn".
-        6.  **QUY TẮC CHUYỂN ĐỔI NGÔI:** - Nếu trong VĂN BẢN NGUỒN có các từ chỉ người nghe như "con", "các con", "trò", "đệ" (ví dụ: "Đệ phải sám hối...", "Con hãy niệm chú..."), bạn BẮT BUỘC phải đổi các từ đó thành "Sư huynh".
-            - Ví dụ nguồn: "Đệ cần tịnh tâm" -> Câu trả lời của bạn: "Sư huynh cần tịnh tâm".
-        
-        --- VĂN BẢN NGUỒN ---
+        **QUY TẮC BẮT BUỘC PHẢI TUÂN THEO TUYỆT ĐỐI (KHÔNG ĐƯỢC PHÉP SAI LỆCH):**
+        1.  **NGUỒN DỮ LIỆU DUY NHẤT:** Chỉ được phép sử dụng thông tin có trong phần "VĂN BẢN NGUỒN". TUYỆT ĐỐI KHÔNG sử dụng kiến thức bên ngoài, không suy diễn, không thêm thắt thông tin.
+        2.  **TRÍCH DẪN CHÍNH XÁC:** Câu trả lời phải bám sát câu chữ trong văn bản gốc. Không viết lại (paraphrase) nếu không cần thiết.
+        3.  **XỬ LÝ KHI KHÔNG TÌM THẤY:** Nếu thông tin không có trong văn bản nguồn, BẮT BUỘC trả lời chính xác câu: "Mời Sư huynh tra cứu thêm tại mục lục tổng quan : https://mucluc.pmtl.site ." (Giữ nguyên dấu câu và khoảng trắng). Không giải thích thêm.
+        4.  **XƯNG HÔ:** Bạn tự xưng là "đệ" và gọi người hỏi là "Sư huynh".
+        5.  **CHUYỂN ĐỔI NGÔI KỂ:** Nếu văn bản gốc dùng các từ như "con", "các con", "trò", "đệ" để chỉ người nghe/người thực hiện, hãy chuyển đổi thành "Sư huynh" cho phù hợp ngữ cảnh đối thoại. Ví dụ: "Con hãy niệm..." -> "Sư huynh hãy niệm...".
+        6.  **XỬ LÝ LINK:** Trả về URL dưới dạng văn bản thuần túy, KHÔNG dùng Markdown link (ví dụ: [tên](url)).
+
+        --- VĂN BẢN NGUỒN BẮT ĐẦU ---
         ${context}
-        --- KẾT THÚC VĂN BẢN NGUỒN ---
-        
-        Dựa vào các quy tắc và ví dụ trên, hãy trả lời câu hỏi sau:
+        --- VĂN BẢN NGUỒN KẾT THÚC ---
         
         Câu hỏi của người dùng: ${question}
         
-        Câu trả lời của bạn:`;
+        Câu trả lời của bạn (Chính xác và tuân thủ mọi quy tắc trên):`;
 
-		// --- ĐOẠN MỚI ĐƯỢC THÊM VÀO ---
-		const safetySettings = [
-		    { category: "HARM_CATEGORY_HARASSMENT", threshold: "BLOCK_NONE" },
-		    { category: "HARM_CATEGORY_HATE_SPEECH", threshold: "BLOCK_NONE" },
-		    { category: "HARM_CATEGORY_SEXUALLY_EXPLICIT", threshold: "BLOCK_NONE" },
-		    { category: "HARM_CATEGORY_DANGEROUS_CONTENT", threshold: "BLOCK_NONE" },
-		];
-		
+        // Cấu hình an toàn để tránh việc chặn nội dung không cần thiết trong ngữ cảnh tôn giáo/tâm linh
+        const safetySettings = [
+            { category: "HARM_CATEGORY_HARASSMENT", threshold: "BLOCK_NONE" },
+            { category: "HARM_CATEGORY_HATE_SPEECH", threshold: "BLOCK_NONE" },
+            { category: "HARM_CATEGORY_SEXUALLY_EXPLICIT", threshold: "BLOCK_NONE" },
+            { category: "HARM_CATEGORY_DANGEROUS_CONTENT", threshold: "BLOCK_NONE" },
+        ];
+        
         const payload = {
             contents: [{ parts: [{ text: prompt }] }],
-			safetySettings: safetySettings,
+            safetySettings: safetySettings,
             generationConfig: {
-                temperature: 0.0,
-                topK: 1,
-                topP: 1,
+                // THIẾT LẬP QUAN TRỌNG CHO ĐỘ CHÍNH XÁC CAO
+                temperature: 0,      // Loại bỏ tính sáng tạo/ngẫu nhiên
+                topK: 1,             // Chỉ chọn token có xác suất cao nhất
+                topP: 0,             // Giới hạn tập hợp token (kết hợp với topK=1 để deterministic nhất có thể)
                 maxOutputTokens: 2048,
             }
         };
@@ -99,27 +95,31 @@ app.post('/api/chat', async (req, res) => {
             headers: { 'Content-Type': 'application/json' }
         });
 
-		// --- ĐOẠN ĐÃ SỬA ---
-		let aiResponse = "";
-		
-		// Kiểm tra xem có dữ liệu 'candidates' không trước khi gọi [0]
-		if (response.data.candidates && response.data.candidates.length > 0) {
-		    aiResponse = response.data.candidates[0].content?.parts[0]?.text || "";
-		} else {
-		    // Nếu không có, in lỗi ra console thay vì sập server
-		    console.log("API Response không có candidates:", JSON.stringify(response.data));
-		    aiResponse = "Hiện tại đệ chưa thể xử lý câu hỏi này do vấn đề kỹ thuật...";
-		}
+        let aiResponse = "";
+        
+        // Kiểm tra an toàn dữ liệu trả về
+        if (response.data.candidates && response.data.candidates.length > 0) {
+            aiResponse = response.data.candidates[0].content?.parts[0]?.text || "";
+        } else {
+            console.log("API Response không có candidates:", JSON.stringify(response.data));
+            aiResponse = "Hiện tại đệ chưa thể xử lý câu hỏi này do vấn đề kỹ thuật...";
+        }
 
+        // Định dạng câu trả lời
         const openFrame = "Đệ xin trả lời câu hỏi của Sư Huynh dựa trên nguồn dữ liệu hiện tại đệ có như sau ạ 🙏\n\n";
-        const closeFrame = "\n\nTrên đây là toàn bộ nội dung đệ tìm được , rất mong những thông tin này hữu ích với Sư huynh , nếu cần trợ giúp gì thêm Sư huynh hãy đặt câu hỏi ! đệ xin dược tiếp tục hỗ trợ ạ 🙏";
+        const closeFrame = "\n\nTrên đây là toàn bộ nội dung đệ tìm được, rất mong những thông tin này hữu ích với Sư huynh, nếu cần trợ giúp gì thêm Sư huynh hãy đặt câu hỏi! Đệ xin được tiếp tục hỗ trợ ạ 🙏";
 
         let finalAnswer = "";
 
         // Kiểm tra xem câu trả lời có chứa link mục lục (dấu hiệu không tìm thấy) hay không
-        if (aiResponse.includes("mucluc.pmtl.site")) {
-            // Nếu không tìm thấy -> Giữ nguyên câu trả lời ngắn gọn của AI
-            finalAnswer = aiResponse;
+        // Sử dụng trim() để tránh lỗi do khoảng trắng thừa
+        if (aiResponse.includes("mucluc.pmtl.site") || aiResponse.trim() === "") {
+             // Nếu không tìm thấy hoặc AI trả về rỗng -> Trả về câu mặc định
+             if (aiResponse.trim() === "") {
+                 finalAnswer = "Mời Sư huynh tra cứu thêm tại mục lục tổng quan : https://mucluc.pmtl.site .";
+             } else {
+                 finalAnswer = aiResponse;
+             }
         } else {
             // Nếu tìm thấy -> Đóng khung trang trọng
             finalAnswer = openFrame + aiResponse + closeFrame;
