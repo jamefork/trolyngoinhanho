@@ -48,7 +48,7 @@ app.post('/api/chat', async (req, res) => {
         }
 
         // Sử dụng model ổn định. Có thể cân nhắc dùng model pro nếu cần độ chính xác cao hơn nữa.
-        const model = "gemini-2.0-flash"; // Hoặc gemini-1.5-pro nếu có quota
+        const model = "gemini-2.5-flash"; // Hoặc gemini-1.5-pro nếu có quota
         const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${GEMINI_API_KEY}`;
 
         // Tạo prompt tối ưu cho việc trích xuất chính xác
@@ -106,8 +106,8 @@ app.post('/api/chat', async (req, res) => {
         }
 
         // Định dạng câu trả lời
-        const openFrame = "Đệ xin trả lời câu hỏi của Sư Huynh dựa trên nguồn dữ liệu hiện tại đệ có như sau ạ 🙏\n\n";
-        const closeFrame = "\n\nTrên đây là toàn bộ nội dung đệ tìm được, rất mong những thông tin này hữu ích với Sư huynh, nếu cần trợ giúp gì thêm Sư huynh hãy đặt câu hỏi! Đệ xin được tiếp tục hỗ trợ ạ 🙏";
+        const openFrame = "Những thông tin dưới đây đều được "Trí tuệ nhân tạo" tổng hợp lại. Vì vậy Sư huynh hãy xác minh lại thông tin Quan Trọng nhé 🙏\n\n";
+        const closeFrame = "\n\n🙏 Để xác minh câu trả lời ! Sư huynh vui lòng truy cập :[ https://tkt.pmtl.site ]";
 
         let finalAnswer = "";
 
