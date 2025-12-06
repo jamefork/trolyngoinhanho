@@ -82,7 +82,7 @@ app.post('/api/chat', async (req, res) => {
             contents: [{ parts: [{ text: prompt }] }],
             generationConfig: {
                 temperature: 0,
-                topK: 10,
+                topK: 5,
                 topP: 0.95,
                 maxOutputTokens: 2048,
             }
