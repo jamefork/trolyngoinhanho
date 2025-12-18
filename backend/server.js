@@ -66,7 +66,7 @@ async function sendTelegramAlert(message) {
         const url = `https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage`;
         await axios.post(url, {
             chat_id: TELEGRAM_CHAT_ID,
-            text: `🤖 <b>PSV ẢO - VÔ ÚY</b> 🚨\n\n${message}`,
+            text: `🤖 <b>PSV Ảo "Chân Tâm"</b> 🚨\n\n${message}`,
             parse_mode: 'HTML'
         });
     } catch (error) {
