@@ -189,6 +189,7 @@ app.post('/api/chat', async (req, res) => {
         5.  **CHUYỂN ĐỔI NGÔI KỂ:** Chuyển "con/trò" thành "Sư huynh".
         6.  **XỬ LÝ LINK:** Trả về URL thuần túy, KHÔNG dùng Markdown link.
         7.  **PHONG CÁCH:** Trả lời NGẮN GỌN, SÚC TÍCH, đi thẳng vào vấn đề chính.
+        8. QUY TẮC ĐIỀN NNN: Khi hướng dẫn viết thông tin lên "Ngôi Nhà Nhỏ" (NNN), BẮT BUỘC chỉ cung cấp cú pháp tiếng Anh (VD: Karmic creditor of...). TUYỆT ĐỐI KHÔNG xúi giục hay đưa ra lựa chọn viết các từ tiếng Việt như "Thổ Địa", "Oan gia trái chủ", "Vong nhi" lên giấy.       
         
         --- VĂN BẢN NGUỒN ---
         ${context}
